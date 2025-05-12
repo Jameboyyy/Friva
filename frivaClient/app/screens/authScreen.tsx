@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { 
-    StyleSheet, 
+    StyleSheet,
     View,
     Text,
     TextInput,
@@ -84,6 +84,24 @@ const AuthScreen = () => {
                         secureTextEntry={true}
                         style={styles.input}
                     />
+                </View>
+                <View style={styles.rowContainer}>
+                    <View style={styles.rememberMeContainer}>
+                        <TouchableOpacity style={styles.rememberMeWrapper} onPress={handleRememberMe}>
+                            <Icon style={styles.checkboxIcon} name={rememberMe ? "check-square-o" : "square-o"} size={20} color="#374151" />
+                            <Text style={styles.rememberMeText}>Remember me</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <Text style={styles.forgotPasswordText}>Forgot password?</Text>
+                </View>
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity style={styles.button} onPress={handleAuth}>
+                        <Text style={styles.buttonText}>Log In</Text>
+                    </TouchableOpacity>
+                    <Text style={styles.orText}>or</Text>
+                    <TouchableOpacity style={styles.button} onPress={handleAuth}>
+                        <Text style={styles.buttonText}>Sign Up</Text>
+                    </TouchableOpacity>
                 </View> 
             </View>
 
@@ -142,7 +160,70 @@ const styles = StyleSheet.create({
         height: 20,
         width: 20,
         alignItems: 'center',
-    }
+    },
+    rowContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginVertical: 10,
+    },
+    rememberMeWrapper: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+    },
+    checkboxIcon: {
+        marginRight: 10,
+        color: '#374151',
+        width: 20,
+    },
+    rememberMeContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+    },
+    rememberMeText: {
+        color: '#374151',
+        fontFamily: 'Outfit',
+        fontSize: 15,
+        fontWeight: '400',
+    },
+    forgotPasswordText: {
+      textDecorationLine: 'underline',
+      color: '#A3B18A',
+      fontFamily: 'Outfit',
+    },
+    buttonContainer: {
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: 300,
+    },
+    button: {
+        backgroundColor: '#A3B18A',
+        width: '100%',
+        height: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginVertical: 10,
+    },
+    buttonText: {
+        fontFamily: 'Outfit',
+        color: '#374151',
+        fontSize: 24,
+        fontWeight: '600',
+        textAlign: 'center',
+        lineHeight: 30,
+    },
+    orText: {
+        fontFamily: 'Outfit',
+        color: '#374151',
+        fontSize: 24,
+        fontWeight: '600',
+        textAlign: 'center',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
 });
 
 export default AuthScreen;

@@ -10,8 +10,11 @@ import {
 } from 'react-native';
 import { supabase } from '../services/supabaseClient';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { useNavigation } from  '@react-navigation/native'
 
 const AuthScreen = () => {
+
+    const navigation = useNavigation();
 
     console.log('AuthScreen is rendering');
     const [isSignUp, setIsSignUp] = useState(false);
@@ -20,41 +23,49 @@ const AuthScreen = () => {
     const [rememberMe, setRememberMe] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    const handleAuth = async () => {
+
+    const handleSignUp = async () => {
         setLoading(true);
-        if (isSignUp) {
-            const { data, error } = await supabase.auth.signUp({
-                email,
-                password
-            });
+        const { data, error } = await supabase.auth.signUp({
+            email,
+            password
+        });
 
-            if (error) {
-                Alert.alert('Error during signup: ' + error.message);
-            } else {
-                Alert.alert('Signup successful');
-                console.log(data.user);
-
-            }
-
+        if (error) {
+            Alert.alert('Error during signup: ' + error.message);
         } else {
-            const { data, error } = await supabase.auth.signInWithPassword({
-                email,
-                password
-            });
+            Alert.alert('Signup successful');
+            console.log(data.user);
+            navigation.navigate('Step1Screen', { email });
+        }
+        setLoading(false);
+    }
 
-            if (error) {
-                Alert.alert('Error during login: ' + error.message);
-            } else {
-                Alert.alert('Login successful');
-                console.log(data.user);
-            }
+    const handleLogIn = async () => {
+        setLoading(true);
+        const { data, error } = await supabase.auth.signInWithPassword({
+            email,
+            password
+        });
+
+        if (error) {
+            Alert.alert('Error during login: ' + error.message);
+        } else {
+            Alert.alert('Login successful');
+            console.log(data.user);
         }
         setLoading(false);
     };
 
+
+
     const handleRememberMe = () => {
         setRememberMe(!rememberMe);
     };
+
+    const handleForgotPassword = () => {
+        Alert.alert('Forgot password');
+    }
 
     return (
         <View style={styles.container}>
@@ -73,6 +84,7 @@ const AuthScreen = () => {
                         value={email}
                         onChangeText={(text) => setEmail(text)}
                         style={styles.input}
+                        autoCapitalize='none'
                     />
                 </View>
                 <View style={styles.inputWrapper}>
@@ -83,6 +95,7 @@ const AuthScreen = () => {
                         onChangeText={(text) => setPassword(text)}
                         secureTextEntry={true}
                         style={styles.input}
+                        autoCapitalize='none'
                     />
                 </View>
                 <View style={styles.rowContainer}>
@@ -92,14 +105,16 @@ const AuthScreen = () => {
                             <Text style={styles.rememberMeText}>Remember me</Text>
                         </TouchableOpacity>
                     </View>
-                    <Text style={styles.forgotPasswordText}>Forgot password?</Text>
+                    <TouchableOpacity>
+                        <Text style={styles.forgotPasswordText} onPress={handleForgotPassword}>Forgot Password?</Text>
+                    </TouchableOpacity>
                 </View>
                 <View style={styles.buttonContainer}>
-                    <TouchableOpacity style={styles.button} onPress={handleAuth}>
+                    <TouchableOpacity style={styles.button} onPress={handleLogIn}>
                         <Text style={styles.buttonText}>Log In</Text>
                     </TouchableOpacity>
                     <Text style={styles.orText}>or</Text>
-                    <TouchableOpacity style={styles.button} onPress={handleAuth}>
+                    <TouchableOpacity style={styles.button} onPress={handleSignUp}>
                         <Text style={styles.buttonText}>Sign Up</Text>
                     </TouchableOpacity>
                 </View> 
